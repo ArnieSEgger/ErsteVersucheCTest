@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>C-Test Italienisch</title>
+<style>
+  :root {
+    --color-primary: #2134CC;
+    --color-secondary: #E0E505;
+    --color-accent: #C92AB6;
+    --color-bg: #45C92A;
+    --color-text: #050505;
+    --color-surface: #FFFFFF;
+    --border: 1px solid rgba(0,0,0,0.15);
+    --shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-primary: #5A72E8;
+      --color-secondary: #B8BC04;
+      --color-accent: #E05FD4;
+      --color-bg: #0F2410;
+      --color-text: #F2FFF2;
+      --color-surface: #143D22;
+      --border: 1px solid rgba(255,255,255,0.2);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    padding: 1rem;
+  }
+  @media (min-width: 48rem) { body { padding: 2rem; } }
+  .page { max-width: 72rem; margin: 0 auto; }
+  .card {
+    background: var(--color-surface);
+    border: var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  @media (min-width: 48rem) { .card { padding: 32px; } }
+  header.card h1 { margin: 0 0 8px; }
+  h1 { font-size: 2rem; line-height: 1.2; color: var(--color-primary); }
+  h2 { font-size: 1.25rem; line-height: 1.2; color: var(--color-primary); margin: 0 0 16px; }
+  .sub { color: var(--color-text); opacity: .75; margin: 0 0 16px; font-style: italic; }
+  main section p { line-height: 2.2; font-size: 1.05rem; margin: 0 0 8px; }
+  .instr {
+    background: var(--color-secondary);
+    color: var(--color-text);
+    padding: 16px;
+    border-radius: 8px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    margin-top: 16px;
+  }
+  input.gap {
+    border: none;
+    border-bottom: 2px solid rgba(0,0,0,0.25);
+    background: transparent;
+    font-family: inherit;
+    font-size: 1em;
+    text-align: center;
+    padding: 0 1px;
+    margin: 0 2px;
+    outline: none;
+    color: var(--color-primary);
+    border-radius: 0;
+  }
+  input.gap:focus {
+    border-bottom-color: var(--color-accent);
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  input.gap.ok { border-bottom-color: #2e7d32; color: #2e7d32; }
+  input.gap.bad { border-bottom-color: #c62828; color: #c62828; }
+  .correct { color: #2e7d32; font-weight: 700; }
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    background: var(--color-primary);
+    color: #fff;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  button:hover { filter: brightness(0.9); }
+  button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  button.secondary { background: var(--color-secondary); color: var(--color-text); }
+  .codebox { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .codebox input {
+    flex: 1 1 16rem;
+    font-size: 1.2rem;
+    letter-spacing: 0.15em;
+    padding: 12px 16px;
+    border: var(--border);
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    outline: none;
+    margin-top: 8px;
+  }
+  .codebox input:focus { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .error { color: #c62828; margin-top: 8px; min-height: 1.2em; font-size: 0.95rem; }
+  .score { font-size: 1rem; margin-top: 16px; }
+  .bar { height: 8px; background: rgba(0,0,0,0.15); border-radius: 4px; overflow: hidden; margin: 8px 0 4px; }
+  .bar > div { height: 100%; background: var(--color-primary); }
+  .hidden { display: none; }
+  .topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- STARTSEITE -->
+  <header id="start" class="card">
+    <h1>C-Test Italienisch 🇮🇹</h1>
+    <p class="sub">Leseverständnis- und Wortergänzungstest</p>
+    <p>Gib den Code ein, um den Test zu starten.</p>
+    <div class="codebox">
+      <input id="code" type="text" placeholder="Code…" autocomplete="off" aria-label="Zugangscode" />
+      <button id="btnStart">Starten</button>
+    </div>
+    <p class="error" id="codeError"></p>
+  </header>
+
+  <!-- TEST -->
+  <main id="test" class="hidden">
+    <header class="card">
+      <div class="topbar">
+        <h1>C-Test Italienisch</h1>
+        <button id="btnCheck">Auswerten</button>
+      </div>
+      <div class="instr">
+        <b>Anleitung:</b> Ergänze die fehlenden Worthälften. Jedes zweite Wort ist
+        abgeschnitten – schreibe die fehlende Hälfte des Wortes in die Lücke.
+        Der erste und der letzte Satz jedes Textes sind vollständig.
+        Der Cursor springt beim Ausfüllen automatisch zur nächsten Lücke.
+      </div>
+    </header>
+    <section id="texts"></section>
+    <footer class="card">
+      <div class="actions">
+        <button id="btnSolutions" class="secondary">Lösungen anzeigen</button>
+        <button id="btnReset" class="secondary">Neu starten</button>
+      </div>
+      <p id="result" class="score"></p>
+    </footer>
+  </main>
+
+</div>
+
+<script>
+// ================= Supabase-Konfiguration =================
+// Projekt-URL und "anon" Key findest du im Supabase-Dashboard unter
+// Project Settings -> API. Trage hier deine Werte ein:
+const SUPABASE_URL = "https://DEIN-PROJEKT.supabase.co";
+const SUPABASE_ANON_KEY = "DEIN-ANON-KEY";
+
+async function supabaseRest(method, path, body) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    method: method,
+    headers: {
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': method === 'POST' ? 'return=minimal' : ''
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if (!res.ok) throw new Error('Supabase: ' + res.status + ' ' + await res.text());
+  return method === 'GET' ? res.json() : null;
+}
+
+// Aktuell eingeloggter Code (global gespeichert)
+let currentCode = null;
+let currentKlasse = null;
+
+const TEXTS = [
+`Maria parla delle sue vacanze. È stata in Sicilia con la sua famiglia, in un campeggio vicino a una città che si chiama Siracusa. Il mare era molto bello e Maria e sua sorella Cristina hanno fatto tanti bagni. Maria sa fare anche il surf. Con la famiglia hanno visitato la cattedrale di Siracusa. Nel campeggio c'era una festa. Maria e Cristina hanno giocato a ping pong per tutta la notte.`,
+`La mia camera è molto grande. Il letto è vicino all finestra. Sopra il tavolo ci sono una lampada e il vecchio orologio di mia mamma. Sotto l'armadio ci sono le mie scarpe e i miei calzini. Sul divano c'è una fotografia di mio fratello. Le tende sono rosse. Dietro la sedia vedo le scarpe da ginastica. Non trovo mai il mio astuccio. È un problema perché lì dentro ci sono la mia gomma, il righello e le matite. "Guarda sotto lo specchio", dice mia mamma. "No, non c'è, lì non c'è", dico io.`,
+`Oggi è il primo giorno di scuola. È arrivata una studentessa nuova. Si chiama Laura. "Ciao Laura, benvenuta", dice la signora Rinaldi, la professoressa di italiano, "ti puoi presentare?". "Buongiorno", dice Laura, "il mio cognome è Müller, sono tedesca, sono di Monaco, ma adesso abito a Coira. Parlo perfettamente anche lo spagnolo perché mia mamma è nata a Barcellona. Mio padre è infermiere, mia madre è direttrice. Amo la geografia. Che bello essere in questa classe!`,
+`Mi chiamo Luca e ho tanti animali. Abito in una fattoria. Ho una mucca, una pecora, una rana e un coniglio. Il mio animale preferito però è un altro. Indovina qual è l'animale che mi piace di più. Vive in Africa e ha quattro zampe. L'elefante? No, non è grigio, è marrone e mangia altri animali. Il leone? Bravo!`
+];
+
+// --- Satz-Aufteilung ---
+function splitSentences(t) {
+  const parts = [];
+  let cur = '';
+  for (let i = 0; i < t.length; i++) {
+    cur += t[i];
+    if (/[.!?]/.test(t[i]) && (i + 1 >= t.length || t[i + 1] === ' ')) {
+      parts.push(cur.trim()); cur = '';
+    }
+  }
+  if (cur.trim()) parts.push(cur.trim());
+  return parts;
+}
+
+// --- Wörter + Zwischenzeichen ---
+const WORD_RE = /[A-Za-zÀ-ÿÄäÖöÜü]+(?:'[A-Za-zÀ-ÿÄäÖöÜü]+)?/g;
+function tokenize(s) {
+  const toks = [];
+  let m, last = 0;
+  WORD_RE.lastIndex = 0;
+  while ((m = WORD_RE.exec(s)) !== null) {
+    if (m.index > last) toks.push({ sep: s.slice(last, m.index) });
+    toks.push({ word: m[0] });
+    last = m.index + m[0].length;
+  }
+  if (last < s.length) toks.push({ sep: s.slice(last) });
+  return toks;
+}
+
+// --- Aufbau des Tests ---
+let gaps = [];
+
+function buildTest() {
+  const container = document.getElementById('texts');
+  container.innerHTML = '';
+  gaps = [];
+  TEXTS.forEach((t, ti) => {
+    const sentences = splitSentences(t);
+    let n = 0; // Wortzähler pro Text
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.dataset.text = String(ti + 1);
+    const h2 = document.createElement('h2');
+    h2.textContent = 'Text ' + (ti + 1);
+    card.appendChild(h2);
+    let anyGap = false;
+    sentences.forEach((s, si) => {
+      const complete = (si === 0 || si === sentences.length - 1);
+      const p = document.createElement('p');
+      tokenize(s).forEach(tok => {
+        if (tok.sep) { p.appendChild(document.createTextNode(tok.sep)); return; }
+        const w = tok.word;
+        let gapped = false;
+        if (!complete) {
+          n++;
+          if (n % 2 === 0 && w.length >= 2) gapped = true;
+        }
+        if (gapped) {
+          const cut = Math.floor(w.length / 2); // ungerade -> einen Buchstaben weniger weg
+          const prefix = w.slice(0, w.length - cut);
+          const solution = w.slice(w.length - cut);
+          p.appendChild(document.createTextNode(prefix));
+          const inp = document.createElement('input');
+          inp.type = 'text';
+          inp.className = 'gap';
+          inp.maxLength = solution.length;
+          inp.style.width = (solution.length * 0.72 + 0.4) + 'em';
+          inp.dataset.solution = solution;
+          inp.autocapitalize = 'off';
+          inp.autocomplete = 'off';
+          inp.spellcheck = false;
+          inp.setAttribute('aria-label', 'Wort ergänzen');
+          p.appendChild(inp);
+          gaps.push(inp);
+          anyGap = true;
+        } else {
+          p.appendChild(document.createTextNode(w));
+        }
+      });
+      card.appendChild(p);
+    });
+    if (anyGap) {
+      const sc = document.createElement('p');
+      sc.className = 'score';
+      card.appendChild(sc);
+    }
+    container.appendChild(card);
+  });
+
+  // Automatischer Weitersprung des Cursors
+  gaps.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      inp.classList.remove('ok', 'bad');
+      if (inp.value.length >= parseInt(inp.maxLength, 10) && i + 1 < gaps.length) {
+        gaps[i + 1].focus();
+      }
+    });
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (i + 1 < gaps.length) gaps[i + 1].focus();
+      }
+      if (e.key === 'ArrowRight' && inp.selectionStart === inp.value.length && i + 1 < gaps.length) {
+        gaps[i + 1].focus();
+      }
+      if (e.key === 'Backspace' && inp.value === '' && i > 0) {
+        e.preventDefault();
+        gaps[i - 1].focus();
+      }
+    });
+  });
+}
+
+async function startTest() {
+  const code = document.getElementById('code');
+  const err = document.getElementById('codeError');
+  const btn = document.getElementById('btnStart');
+  const eingabe = code.value.trim().toUpperCase();
+  if (!eingabe) { err.textContent = 'Bitte gib einen Code ein.'; code.focus(); return; }
+  btn.disabled = true;
+  err.textContent = '';
+  try {
+    // Code in der Datenbank prüfen
+    const rows = await supabaseRest('GET',
+      'codes?select=code,klasse&code=eq.' + encodeURIComponent(eingabe) + '&aktiv=eq.true');
+    if (!rows || rows.length === 0) {
+      err.textContent = 'Falscher oder deaktivierter Code. Bitte erneut versuchen.';
+      code.focus();
+      code.select();
+    } else {
+      currentCode = rows[0].code;
+      currentKlasse = rows[0].klasse || null;
+      document.getElementById('start').classList.add('hidden');
+      document.getElementById('test').classList.remove('hidden');
+      buildTest();
+      if (gaps.length) gaps[0].focus();
+    }
+  } catch (e) {
+    err.textContent = 'Verbindung zur Datenbank fehlgeschlagen: ' + e.message;
+    code.focus();
+  } finally {
+    btn.disabled = false;
+  }
+}
+document.getElementById('btnStart').addEventListener('click', startTest);
+document.getElementById('code').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startTest();
+});
+
+async function checkAll() {
+  let totalOk = 0, total = 0, filled = 0;
+  const perText = new Map();
+  gaps.forEach(inp => {
+    const ok = inp.value.trim().toLowerCase() === inp.dataset.solution.toLowerCase();
+    total++; if (ok) totalOk++;
+    if (inp.value.trim() !== '') filled++;
+    inp.classList.remove('ok', 'bad');
+    inp.classList.add(ok ? 'ok' : 'bad');
+    const card = inp.closest('.card');
+    if (!perText.has(card)) perText.set(card, [0, 0]);
+    const agg = perText.get(card);
+    agg[0] += ok ? 1 : 0; agg[1] += 1;
+  });
+  perText.forEach((agg, cardEl) => {
+    const sc = cardEl.querySelector('.score');
+    if (sc) sc.innerHTML = 'Ergebnis: <b>' + agg[0] + ' / ' + agg[1] + '</b> (' + Math.round(agg[0] / agg[1] * 100) + '%)';
+  });
+  const pct = Math.round(totalOk / total * 100);
+  document.getElementById('result').innerHTML =
+    '<b>Gesamt: ' + totalOk + ' / ' + total + ' Punkte (' + pct + '%)</b>' +
+    '<span class="bar"><div style="width:' + pct + '%"></div></span>' +
+    (filled < total ? '<p class="error" style="margin-top:8px">Du hast ' + (total - filled) + ' Lücken leer gelassen.</p>' : '');
+
+  // Ergebnisse in der Datenbank speichern
+  if (currentCode) {
+    const rows = [];
+    perText.forEach((agg, cardEl) => {
+      rows.push({
+        code: currentCode,
+        klasse: currentKlasse,
+        text_nr: parseInt(cardEl.dataset.text, 10),
+        punkte: agg[0],
+        punkte_max: agg[1],
+        prozent: Math.round(agg[0] / agg[1] * 100)
+      });
+    });
+    try {
+      await supabaseRest('POST', 'results', rows);
+      document.getElementById('result').innerHTML += '<p style="margin-top:8px">✅ Dein Ergebnis wurde gespeichert.</p>';
+    } catch (e) {
+      document.getElementById('result').innerHTML += '<p class="error" style="margin-top:8px">⚠️ Speichern fehlgeschlagen: ' + e.message + '</p>';
+    }
+  }
+}
+document.getElementById('btnCheck').addEventListener('click', checkAll);
+
+function showSolutions() {
+  gaps.forEach(inp => {
+    if (inp.value.trim().toLowerCase() !== inp.dataset.solution.toLowerCase()) {
+      const mark = document.createElement('span');
+      mark.className = 'correct';
+      mark.textContent = inp.dataset.solution;
+      inp.replaceWith(mark);
+    }
+  });
+  gaps = [];
+}
+document.getElementById('btnSolutions').addEventListener('click', showSolutions);
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  document.getElementById('test').classList.add('hidden');
+  document.getElementById('start').classList.remove('hidden');
+  const code = document.getElementById('code');
+  code.value = '';
+  code.focus();
+});
+</script>
+</body>
+</html>
